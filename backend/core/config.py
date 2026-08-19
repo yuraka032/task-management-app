@@ -4,16 +4,20 @@ from pydantic import field_validator
 import os
 
 class Settings(BaseSettings):
+    """Application configuration loaded from environment variables."""
+
     API_PREFIX: str = "/api"
     DEBUG: bool = False
     DATABASE_URL: str = None
-    ALLOWED_ORIGINS: str = ""
+    ALLOWED_ORIGINS: List[str] = []
 
     @field_validator("ALLOWED_ORIGINS")
     def parse_allowed_origins(cls, v: str) -> List[str]:
+        """Convert comma-separated CORS origins from .env into a list."""
         return v.split(",") if v else []
 
     class Config:
+        # Load configuration values from the backend .env file.
         env_file = ".env"
         env_file_encoding = "utf-8"
         case_sensitive = True

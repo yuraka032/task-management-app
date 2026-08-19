@@ -14,6 +14,7 @@ Base = declarative_base()
 
 
 def get_db():
+    """Provide a database session and close it after the request."""
     db = SessionLocal()
 
     try:
@@ -22,4 +23,5 @@ def get_db():
         db.close()
 
 def create_tables():
+    """Create database tables defined by the SQLAlchemy models."""
     Base.metadata.create_all(bind=engine)

@@ -5,6 +5,8 @@ from schemas.task import TaskCreate, TaskUpdate
 
 
 def create_task(db: Session, task_data: TaskCreate):
+    """Create and save a new task."""
+
     task = Task(
         title=task_data.title,
         description=task_data.description,
@@ -16,7 +18,9 @@ def create_task(db: Session, task_data: TaskCreate):
 
     return task
 
-def get_tasks(completed: bool | None, db: Session):
+def get_tasks(db: Session, completed: bool | None):
+    """Retrieve tasks, optionally filtered by completion status."""
+
     query = db.query(Task)
 
     if completed is not None:
@@ -25,6 +29,8 @@ def get_tasks(completed: bool | None, db: Session):
     return query.all()
 
 def search_tasks(db: Session, search_query: str, completed: bool | None = None):
+    """Search tasks by title with an optional completion status filter."""
+
     query = db.query(Task).filter(Task.title.ilike(f"%{search_query}%"))
 
     if completed is not None:
@@ -33,6 +39,8 @@ def search_tasks(db: Session, search_query: str, completed: bool | None = None):
     return query.all()
 
 def update_task(db: Session, task_id: int, task_data: TaskUpdate):
+    """Update an existing task with the provided fields."""
+
     task = db.query(Task).filter(Task.id == task_id).first()
 
     if not task:
@@ -51,6 +59,8 @@ def update_task(db: Session, task_id: int, task_data: TaskUpdate):
     return task
 
 def delete_task(db: Session, task_id: int):
+    """Delete an existing task from the database."""
+    
     task = db.query(Task).filter(Task.id == task_id).first()
 
     if not task:
