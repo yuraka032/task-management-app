@@ -1,0 +1,60 @@
+# =========================
+# Python / FastAPI
+# =========================
+
+# Virtual environments
+venv/
+.venv/
+backend/venv/
+backend/.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+.env.*
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Python build
+build/
+dist/
+*.egg-info/
+
+
+# =========================
+# React 
+# =========================
+
+node_modules/
+dist/
+build/
+
+# Environment variables
+frontend/.env
+frontend/.env.*
+
+# Vite
+.vite/
+
+
+# =========================
+# IDE / Editors
+# =========================
+
+.vscode/
+.idea/
+
+
+# =========================
+# OS
+# =========================
+
+.DS_Store
+Thumbs.db
