@@ -2,6 +2,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from core.config import settings
+from routers import task
+from db.database import create_tables
+
+create_tables()
 
 app = FastAPI(
     title="Task Management API",
@@ -17,6 +21,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(task.router, prefix=settings.API_PREFIX, tags=["Tasks"])
 
 if __name__ == "__main__":
     import uvicorn
