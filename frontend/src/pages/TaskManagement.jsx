@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styles from '../styles/TaskManagement.module.css';
 
@@ -6,32 +6,59 @@ import SearchBar from '../components/SearchBar';
 import FilterButton from '../components/FilterButton';
 import TasksList from '../components/TasksList';
 import AddTaskModal from '../components/AddTaskModal';
-import DeleteModal from '../components/DeleteModal';
 
-import initialTasks from '../data/tasks';
+import {
+    getTasks,
+    searchTasks,
+    createTask,
+    updateTask,
+    deleteTask
+} from "../services/taskService";
 
 function TaskManagement() {
-    const [tasks, setTasks] = useState(initialTasks);
+   const [tasks, setTasks] = useState([]);
 
     const [searchQuery, setSearchQuery] = useState("");
     const [filter, setFilter] = useState("all");
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-    const fetchTasks = async (query, selectedFilter) => {
-        let completed = null;
-
+    // Convert the filter value into the completed parameter
+    const getCompletedValue = (selectedFilter) => {
         if (selectedFilter === "completed") {
-            completed = true;
-        } else if (selectedFilter === "incomplete") {
-            completed = false;
+            return true;
         }
 
-        console.log("Search:", query);
-        console.log("Completed:", completed);
+        if (selectedFilter === "incomplete") {
+            return false;
+        }
 
-        // API request will go here
+        return null;
     };
+
+    // Fetch tasks based on search/filter
+    const fetchTasks = async (query = searchQuery, selectedFilter = filter) => {
+        try {
+            const completed = getCompletedValue(selectedFilter);
+
+            let data;
+
+            if (query.trim() !== "") {
+                data = await searchTasks(query, completed);
+            } else {
+                data = await getTasks(completed);
+            }
+
+            setTasks(data);
+        } catch (error) {
+            console.error("Failed to fetch tasks:", error);
+        }
+    };
+
+    // Initial task fetch
+    useEffect(() => {
+        fetchTasks("", "all");
+    }, []);
 
     const handleSearch = (query) => {
         setSearchQuery(query);
@@ -43,10 +70,26 @@ function TaskManagement() {
         fetchTasks(searchQuery, newFilter);
     };
 
-    const handleToggleComplete = (taskId) => {
-        console.log("Toggle complete:", taskId);
+    // Toggle task completion
+    const handleToggleComplete = async (taskId) => {
+        try {
+            const task = tasks.find((task) => task.id === taskId);
 
-        // API update will go here
+            if (!task) {
+                return;
+            }
+
+            await updateTask(taskId, {
+                ...task,
+                completed: !task.completed
+            });
+
+            // Refresh the list so filters/search stay correct
+            fetchTasks(searchQuery, filter);
+
+        } catch (error) {
+            console.error("Failed to update task:", error);
+        }
     };
 
     const handleOpenAddModal = () => {
@@ -57,10 +100,41 @@ function TaskManagement() {
         setIsAddModalOpen(false);
     };
 
-    const handleAddTask = (taskData) => {
-        // API request will be implemented later
-        console.log("Add task:", taskData);
-        setIsAddModalOpen(false);
+    // Create a new task
+    const handleAddTask = async (taskData) => {
+        try {
+            await createTask(taskData);
+
+            setIsAddModalOpen(false);
+
+            // Refresh task list
+            fetchTasks(searchQuery, filter);
+
+        } catch (error) {
+            console.error("Failed to create task:", error);
+        }
+    };
+
+    const handleEditTask = async (taskId, updatedTask) => {
+        try {
+            await updateTask(taskId, updatedTask);
+
+            await fetchTasks(searchQuery, filter);
+        } catch (error) {
+            console.error("Failed to update task:", error);
+            throw error;
+        }
+    };
+
+    const handleDeleteTask = async (taskId) => {
+        try {
+            await deleteTask(taskId);
+
+            await fetchTasks(searchQuery, filter);
+        } catch (error) {
+            console.error("Failed to delete task:", error);
+            throw error;
+        }
     };
 
     return (
@@ -74,10 +148,11 @@ function TaskManagement() {
                 </div>
             </div>
 
-            <TasksList tasks={tasks} onToggleComplete={handleToggleComplete} />
+            <TasksList tasks={tasks} onToggleComplete={handleToggleComplete} 
+                        onEdit={handleEditTask} onDelete={handleDeleteTask}/>
 
             <button className={styles.addTaskButton} onClick={handleOpenAddModal}>
-                <img src="../../public/add_icon.png" alt="Add Task" className={styles.addIcon} />
+                <img src="/add_icon.png" alt="Add Task" className={styles.addIcon} />
             </button>
 
             {isAddModalOpen && (

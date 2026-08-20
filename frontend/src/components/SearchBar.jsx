@@ -13,7 +13,7 @@ function SearchBar({ onSearch }) {
 
     return (
         <div className={styles.searchContainer}>
-            <img src="../../public/search_icon.png" alt="Search" />
+            <img src="/search_icon.png" alt="Search" />
 
             <input
                 type="text"

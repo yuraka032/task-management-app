@@ -5,7 +5,7 @@ import styles from '../styles/TaskItem.module.css';
 import EditTaskModal from './EditTaskModal';
 import DeleteModal from './DeleteModal';
 
-function TaskItem({ task, onToggleComplete }) {
+function TaskItem({ task, onToggleComplete, onEdit, onDelete }) {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -26,19 +26,24 @@ function TaskItem({ task, onToggleComplete }) {
         setIsDeleteModalOpen(true);
     };
 
-    const handleEditSave = (updatedTask) => {
-        // Edit API/action will be implemented later
-        console.log("Edit task:", updatedTask);
-
-        setIsEditModalOpen(false);
+    const handleEditSave = async (updatedTask) => {
+        try {
+            await onEdit(task.id, updatedTask);
+            setIsEditModalOpen(false);
+        } catch (error) {
+            console.error("Failed to edit task:", error);
+        }
     };
 
-    const handleDeleteConfirm = (taskId) => {
-        // Delete API/action will be implemented later
-        console.log("Delete task:", taskId);
-
-        setIsDeleteModalOpen(false);
+    const handleDeleteConfirm = async () => {
+        try {
+            await onDelete(task.id);
+            setIsDeleteModalOpen(false);
+        } catch (error) {
+            console.error("Failed to delete task:", error);
+        }
     };
+
 
     return (
         <>
@@ -52,18 +57,23 @@ function TaskItem({ task, onToggleComplete }) {
                             onChange={handleComplete}
                         />
 
-                        <p className={styles.taskName} onClick={handleTaskClick}>
-                            {task.name}
+                        <p
+                            className={`${styles.taskName} ${
+                                task.completed ? styles.completed : ''
+                            }`}
+                            onClick={handleTaskClick}
+                        >
+                            {task.title}
                         </p>
                     </div>
 
                     <div className={styles.actionButtons}>
                         <button onClick={handleEdit}>
-                            <img src="../../public/edit_icon.png" alt="Edit" className={styles.editImg}/>
+                            <img src="/edit_icon.png" alt="Edit" className={styles.editImg}/>
                         </button>
 
                         <button onClick={handleDelete}>
-                            <img src="../../public/delete_icon.png" alt="Delete"  className={styles.deleteImg}/>
+                            <img src="/delete_icon.png" alt="Delete"  className={styles.deleteImg}/>
                         </button>
                     </div>
                 </div>

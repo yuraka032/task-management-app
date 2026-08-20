@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styles from '../styles/AddTaskModal.module.css';
 
 function EditTaskModal({ task, onClose, onSave }) {
-    const [taskName, setTaskName] = useState(task.name);
+    const [taskName, setTaskName] = useState(task.title);
     const [description, setDescription] = useState(task.description);
 
     const handleSave = () => {
@@ -14,7 +14,7 @@ function EditTaskModal({ task, onClose, onSave }) {
 
         const updatedTask = {
             id: task.id,
-            name: taskName.trim(),
+            title: taskName.trim(),
             description: description.trim()
         };
 
