@@ -1,0 +1,34 @@
+.searchContainer {
+    display: flex;
+    flex-direction: row;
+    width: 420px;
+    height: 35px;
+    background: #E9DAC5;
+    border: 1px solid #2A231B;
+    align-items: center;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+.searchContainer img {
+    width: 24px;
+    height: 24px;
+}
+
+.searchContainer input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    color: #2A231B;
+    margin-left: 4px;
+}
+
+.searchContainer input:focus {
+    outline: none;
+    border: none;
+}

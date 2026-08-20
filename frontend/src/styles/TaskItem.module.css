@@ -1,0 +1,84 @@
+.taskItem {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #2A231B;
+    width: 500px;
+}
+
+.mainTask {
+    display: flex;
+    flex-direction: row;;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.task {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.checkbox {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #2A231B;
+    border-radius: 50%;
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+    align-self: center;
+}
+
+.checkbox::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: #333;
+    transform: scale(0);
+    transition: transform 0.15s ease-in-out;
+}
+
+.checkbox:checked::before {
+    transform: scale(1);
+}
+
+.actionButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.editImg {
+    height: 21px;
+    width: 21px;
+    align-self: center;
+}
+
+.deleteImg {
+    height: 24px;
+    width: 24px;
+}
+
+.description {
+    font-size: 14px;
+    font-weight: 400;
+    color: #4A4238;
+    margin-left: 30px;
+}
+
+.description p {
+    margin-top: 0px;
+}
+
+.actionButtons button {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.taskName {
+    cursor: pointer;
+}

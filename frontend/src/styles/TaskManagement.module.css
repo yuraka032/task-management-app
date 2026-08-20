@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Hanken+Grotesk:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,600;1,14..32,600&family=Pixelify+Sans&family=Rubik:ital@0;1&display=swap');
+
+.taskManagement {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #F8DC3D;
+    border: 1px solid #2A231B;
+    border-top: none;
+    padding: 23px 40px;
+    height: 110px;
+}
+
+.header h1 {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    color: #2A231B;
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+.searchFilterContainer {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between; */
+}
+
+.addTaskButton {
+    position: fixed;
+    bottom: 30px;
+    right: 35%;
+    background-color: #FC7032;
+    width: 52px;
+    height: 52px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
